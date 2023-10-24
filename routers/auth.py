@@ -13,7 +13,7 @@ from datetime import timedelta, datetime
 
 router = APIRouter()
 
-SECRET_KEY = 'd462a14ccf55e670f7edc960d38304d01b1ed624f81e124ead1d80ef8435a938'
+SECRET_KEY = 'd462a14ccf55e670f7edc960d38304d01b1ed624f81e124ead1d80ef8435a938'  # don't worry, that's a test secret key
 ALGORITHM = 'HS256'
 
 
