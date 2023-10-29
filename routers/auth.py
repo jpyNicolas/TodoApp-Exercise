@@ -11,7 +11,11 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from datetime import timedelta, datetime
 
-router = APIRouter()
+
+router = APIRouter(
+    prefix='/auth',
+    tags=['auth']
+)
 
 SECRET_KEY = 'd462a14ccf55e670f7edc960d38304d01b1ed624f81e124ead1d80ef8435a938'  # don't worry, that's a test secret key
 ALGORITHM = 'HS256'
@@ -29,7 +33,7 @@ class Token(BaseModel):
     token_type: str
 
 
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 
 def passwd_hashing(passwd: str):
@@ -86,6 +90,6 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
 async def get_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
-        return 'failed authentication'
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='authentication failed')
     token = create_access_token(user.username, user.id, timedelta(minutes=20))
     return {'access_token': token, 'token_type': 'bearer'}
