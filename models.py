@@ -10,6 +10,7 @@ class Users(Base):
     username = Column(String, unique=True, nullable=False)
     hashed_passwd = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
+    role = Column(String)
 
 
 class Todos(Base):
