@@ -20,8 +20,8 @@ class TodoRequest(BaseModel):
 
 
 @router.get("/")
-async def get_todos(db: db_dependency):
-    return db.query(Todos).all()
+async def get_todos(user: current_user_dependency,db: db_dependency):
+    return db.query(Todos).filter(Todos.id == user.get('id')).all()
 
 
 @router.get("/todos/{todo_id}")
